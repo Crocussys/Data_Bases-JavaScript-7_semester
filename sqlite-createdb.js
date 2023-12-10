@@ -2,11 +2,11 @@ var sqlite3 = require("sqlite3").verbose();
 //var db = new sqlite3.Database(":memory:");
 var db = new sqlite3.Database("students.db");
 // для колонки нельзя использовать имя 'group' - это зарезервированное ключевое слово
-db.run("CREATE TABLE Student (name TEXT, grp TEXT, address TEXT, age INT)", function(err) {
+db.run("CREATE TABLE Student (id INTEGER PRIMARY KEY, name TEXT, grp TEXT, address TEXT, age INTEGER)", function(err) {
  if(err) {
  console.log(err);
  } else {
- var stmt = db.prepare("INSERT INTO Student VALUES (?, ?, ?, ?)");
+ var stmt = db.prepare("INSERT INTO Student (name, grp, address, age) VALUES (?, ?, ?, ?)");
  stmt.run("Лосев Кир Маврикиевич", "18-РЭС-1", "г. Арзамас пер. 3-й Павлова д. 6", 25);
  stmt.run("Нечаев Эраст Артемьевич", "18-РЭС-1", "г. Снежное ул. Путилина д. 10", 23);
  stmt.run("Еромлаев Фёдор Ермолаевич", "21-ПМ-1", "г. Новый Уренгой мкр. Энтузиастов д. 14", 22);

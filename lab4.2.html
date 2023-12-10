@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Node+http+ajax+sqlite web app</title>
+        <meta charset="UTF-8"/>
+        <script type="text/javascript">
+            var showTable = function (req){
+                return function (){
+                    if (req.readyState === 4){
+                        if (req.status === 200){
+                            table.innerHTML = "";
+                            data = JSON.parse(req.response).data;
+                            for (let i = 0; i < data.length; i++){
+                                var elem = data[i];
+                                let line = document.createElement('tr');
+                                let id = document.createElement('td');
+                                id.innerText = elem.id;
+                                let name = document.createElement('td');
+                                name.innerText = elem.name;
+                                let grp = document.createElement('td');
+                                grp.innerText = elem.grp;
+                                let address = document.createElement('td');
+                                address.innerText = elem.address;
+                                let age = document.createElement('td');
+                                age.innerText = elem.age;
+                                line.append(id);
+                                line.append(name);
+                                line.append(grp);
+                                line.append(address);
+                                line.append(age);
+                                table.append(line);
+                            }
+                        }
+                    }
+                }
+            };
+            function sendReq(){
+                if (input.value === ""){
+                    var req = new XMLHttpRequest();
+                    req.onreadystatechange = showTable(req);
+                    req.open("POST", "/all");
+                    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    req.send();
+                }else{
+                    var req = new XMLHttpRequest();
+                    req.onreadystatechange = showTable(req);
+                    req.open("POST", "/search");
+                    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    req.send(input.value);
+                }
+            };
+        </script>
+    </head>
+    <body onload="sendReq()">
+        <input type="text" id="input" placeholder="Поиск" oninput="sendReq()">
+        <table id="table"></table>
+    </body>
+</html>
